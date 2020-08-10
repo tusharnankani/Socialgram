@@ -1,25 +1,25 @@
 import React from "react";
-
+import Facebook from "./components/Facebook/Facebook";
+import Todo from "./components/Todo/Todo";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { TodoProvider } from "./TodoContext";
+import { PostProvider } from "./PostContext";
 import "./App.css";
-import SideNav from "./components/SideNav";
-import Adds from "./components/Adds";
-import Feed from "./components/Feed";
 
 const App = () => {
   return (
     <React.Fragment>
-      <nav className="navbar navbar-dark bg-dark">
-        <a className="navbar-brand" href="#!">
-          Home
-        </a>
-      </nav>
-      <div className="container">
-        <div className="row mt-5">
-          <SideNav />
-          <Feed />
-          <Adds />
-        </div>
-      </div>
+      <Router>
+        <Switch>
+          <PostProvider>
+            <Route path="/" exact component={Facebook} />
+            <Route path="/facebook" component={Facebook} />
+          </PostProvider>
+          <TodoProvider>
+            <Route path="/todo" component={Todo} />
+          </TodoProvider>
+        </Switch>
+      </Router>
     </React.Fragment>
   );
 };

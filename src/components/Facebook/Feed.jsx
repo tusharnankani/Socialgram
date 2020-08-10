@@ -1,21 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import Heart from "../assets/heart.png";
-import ThumbsUp from "../assets/thumb-up.png";
-import ThumbsDown from "../assets/thumb-down.png";
+import Heart from "../../assets/heart.png";
+import ThumbsUp from "../../assets/thumb-up.png";
+import ThumbsDown from "../../assets/thumb-down.png";
+import { PostContext } from "../../PostContext";
 
 const Feed = () => {
   const [post, setPost] = useState("");
-  const [allPost, setAllPost] = useState([]);
+  const [allPost, setAllPost] = useContext(PostContext);
   const [comment, setComment] = useState("");
   const [allComment, setAllComment] = useState([]);
+  // const url = `https://fb-clone-backend.herokuapp.com/`;
+  const url = `http://localhost:4050/`;
+
   useEffect(() => {
     getPost();
   }, []);
 
   const getPost = async () => {
     try {
-      const posts = await fetch("https://fb-clone-backend.herokuapp.com/post");
+      const posts = await fetch(`${url}post`);
       const result = await posts.json();
       setAllPost(result);
     } catch (error) {
@@ -32,7 +36,7 @@ const Feed = () => {
       comments: [],
     };
     try {
-      await fetch("https://fb-clone-backend.herokuapp.com/post", {
+      await fetch(`${url}post`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -53,6 +57,7 @@ const Feed = () => {
     } catch (error) {
       console.log(error);
     }
+    setPost("");
   };
   const addComment = (id, value) => {
     const response = {
@@ -72,18 +77,19 @@ const Feed = () => {
       }
     });
     axios
-      .put(`https://fb-clone-backend.herokuapp.com/comments/${id}`, response)
+      .put(`${url}comments/${id}`, response)
       .then((res) => console.log(res.json()))
       .catch((error) => {
         console.log(error);
       });
+    setComment("");
   };
   const addLikes = (id, value) => {
     const response = {
       likes: value + 1,
     };
     axios
-      .put(`https://fb-clone-backend.herokuapp.com/likes/${id}`, response)
+      .put(`${url}likes/${id}`, response)
       .then((res) =>
         allPost.map((post) => {
           if (post._id === id) {
@@ -104,7 +110,7 @@ const Feed = () => {
       dislikes: value + 1,
     };
     axios
-      .put(`https://fb-clone-backend.herokuapp.com/dislikes/${id}`, response)
+      .put(`${url}dislikes/${id}`, response)
       .then((res) =>
         allPost.map((post) => {
           if (post._id === id) {
@@ -126,7 +132,7 @@ const Feed = () => {
       hearts: value + 1,
     };
     axios
-      .put(`https://fb-clone-backend.herokuapp.com/hearts/${id}`, response)
+      .put(`${url}hearts/${id}`, response)
       .then((res) =>
         allPost.map((post) => {
           if (post._id === id) {
@@ -142,6 +148,16 @@ const Feed = () => {
         console.log(error);
       });
   };
+  // const convertDate = (date) => {
+  //   const dates = new Date(date);
+  //   const formattedDate = Intl.DateTimeFormat("en-US", {
+  //     year: "numeric",
+  //     month: "short",
+  //     day: "2-digit",
+  //   }).format(dates);
+  //   console.log(formattedDate);
+  //   return formattedDate;
+  // };
   return (
     <React.Fragment>
       <div className="col-sm-6">
@@ -150,6 +166,7 @@ const Feed = () => {
           <textarea
             className="form-control"
             aria-label="With textarea"
+            value={post}
             placeholder="enter your thoughts"
             onChange={(event) => setPost(event.target.value)}
           ></textarea>
@@ -192,6 +209,7 @@ const Feed = () => {
                 alt=""
                 onClick={() => hearts(post._id, post.hearts)}
               />
+              {/* <p>{convertDate(post.date)}</p> */}
             </div>
             <div className="input-group mb-3 mt-3">
               <input
@@ -200,6 +218,7 @@ const Feed = () => {
                 placeholder="comment"
                 aria-label="comment"
                 aria-describedby="basic-addon1"
+                value={comment}
                 onChange={(event) => setComment(event.target.value)}
               />
             </div>

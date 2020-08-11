@@ -5,6 +5,7 @@ import Navbar from "./Navbar";
 import { TodoContext } from "../../TodoContext";
 
 const App = () => {
+  console.log("todo");
   const [todo, setTodo] = useState("");
   // const [allTodo, setAllTodo] = useState([]);
   const [allTodo, setAllTodo] = useContext(TodoContext);

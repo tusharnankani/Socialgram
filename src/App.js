@@ -11,13 +11,21 @@ const App = () => {
     <React.Fragment>
       <Router>
         <Switch>
-          <PostProvider>
-            <Route path="/" exact component={Facebook} />
-            <Route path="/facebook" component={Facebook} />
-          </PostProvider>
-          <TodoProvider>
-            <Route path="/todo" component={Todo} />
-          </TodoProvider>
+          <Route path="/">
+            <PostProvider>
+              <Facebook />
+            </PostProvider>
+          </Route>
+          <Route path="/facebook">
+            <PostProvider>
+              <Facebook />
+            </PostProvider>
+          </Route>
+          <Route path="/todo">
+            <TodoProvider>
+              <Todo />
+            </TodoProvider>
+          </Route>
         </Switch>
       </Router>
     </React.Fragment>

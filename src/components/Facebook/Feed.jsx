@@ -10,8 +10,8 @@ const Feed = () => {
   const [allPost, setAllPost] = useContext(PostContext);
   const [comment, setComment] = useState("");
   const [allComment, setAllComment] = useState([]);
-  // const url = `https://fb-clone-backend.herokuapp.com/`;
-  const url = `http://localhost:4050/`;
+  const url = `https://fb-clone-backend.herokuapp.com/`;
+  // const url = `http://localhost:4050/`;
 
   useEffect(() => {
     getPost();
